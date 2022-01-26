@@ -4,14 +4,17 @@ import axios from "axios";
 const AdviceComponent = () => {
   const [advice, setAdvice] = useState("");
   const [loading, setLoading] = useState(false);
+  const [fetchState, setFetchState] = useState(false);
 
   const fetchadvice = async () => {
     setLoading(false);
-    let response = await axios.get("https://api.adviceslip.com/advice");
+    setFetchState(false);
+    let response = await axios.get(`${window.CONFIGS.BASE_ENDPOINT}advice`);
     console.log({ response });
     const { advice } = response.data.slip;
     setAdvice(advice);
     setLoading(true);
+    setTimeout(() => setFetchState(true), 5000);
   };
 
   useEffect(() => {
@@ -27,7 +30,13 @@ const AdviceComponent = () => {
       {loading ? (
         <>
           <h2> {advice} </h2>
-          <button onClick={() => fetchadvice()}> Give me advice </button>
+          {fetchState ? (
+            <button onClick={() => fetchadvice()}>Give me advice</button>
+          ) : (
+            <button style={{ background: "#888888" }} disabled={fetchState}>
+              Please wait....
+            </button>
+          )}
         </>
       ) : (
         <img src="loading.gif" alt="loading" />
