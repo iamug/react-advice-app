@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+const { REACT_APP_BASEURL } = process.env;
 
 const AdviceComponent = () => {
   const [advice, setAdvice] = useState("");
@@ -9,7 +10,7 @@ const AdviceComponent = () => {
   const fetchadvice = async () => {
     setLoading(false);
     setFetchState(false);
-    let response = await axios.get(`${window.CONFIGS.BASE_ENDPOINT}advice`);
+    let response = await axios.get(`${REACT_APP_BASEURL}advice`);
     console.log({ response });
     const { advice } = response.data.slip;
     setAdvice(advice);
